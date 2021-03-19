@@ -1,0 +1,43 @@
+version: '3.4'
+services:
+    bar-nginx:
+        build:
+            context: ./bar/docker
+            dockerfile: nginx.docker
+        volumes:
+            - ./bar:/var/www/html
+        depends_on:
+            - bar-php-fpm
+        ports:
+            - "8080:80"
+    bar-php-fpm:
+        build:
+            context: ./bar/docker
+            dockerfile: php-fpm.docker
+        volumes:
+            - ./bar:/var/www/html
+        depends_on:
+            - bar-postgres
+    bar-php-cli:
+        build:
+            context: ./bar/docker
+            dockerfile: php-cli.docker
+        volumes:
+            - ./bar:/var/www/html
+            - composer:/root/.composer/cache
+        depends_on:
+            - bar-postgres
+    bar-postgres:
+        image: postgres:13.2-alpine
+        volumes:
+            - bar-postgres:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: app
+            POSTGRES_PASSWORD: secret
+            POSTGRES_DB: app
+        ports:
+            - "54321:5432"
+
+volumes:
+    bar-postgres:
+    composer:
