@@ -17,7 +17,7 @@ services:
         volumes:
             - ./bar:/var/www/html
         depends_on:
-            - bar-postgres
+            - bar-mysql
     bar-php-cli:
         build:
             context: ./bar/docker
@@ -26,18 +26,19 @@ services:
             - ./bar:/var/www/html
             - composer:/root/.composer/cache
         depends_on:
-            - bar-postgres
-    bar-postgres:
-        image: postgres:13.2-alpine
+            - bar-mysql
+    bar-mysql:
+        image: mysql:5.7
         volumes:
-            - bar-postgres:/var/lib/postgresql/data
+            - bar-mysql:/var/lib/mysql
         environment:
-            POSTGRES_USER: app
-            POSTGRES_PASSWORD: secret
-            POSTGRES_DB: app
+            MYSQL_ROOT_PASSWORD: root_password
+            MYSQL_DATABASE: app_db
+            MYSQL_USER: app_user
+            MYSQL_PASSWORD: app_password
         ports:
-            - "54321:5432"
+            - "33306:3306"
 
 volumes:
-    bar-postgres:
+    bar-mysql:
     composer:
