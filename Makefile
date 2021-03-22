@@ -17,10 +17,16 @@ docker-pull:
 docker-build:
 	docker-compose build
 
-bar-init: bar-composer-install
+bar-init: bar-composer-install bar-migrations bar-fixtures
 
 bar-composer-install:
 	docker-compose run --rm bar-php-cli composer install
+
+bar-migrations:
+	docker-compose run --rm bar-php-cli php bin/console doctrine:migrations:migrate --no-interaction
+
+bar-fixtures:
+	docker-compose run --rm bar-php-cli php bin/console doctrine:fixtures:load --no-interaction
 
 bar-test:
 	docker-compose run --rm bar-php-cli php bin/phpunit
