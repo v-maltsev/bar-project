@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Bar;
 
 use App\Controller\Api\PrettyJsonResponse;
+use App\Model\Bar\Entity\PlayList\PlayList;
 use App\Model\Bar\Entity\PlayList\PlayListRepository;
 use App\Model\Bar\UseCase\PlayList\Add;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,7 +29,7 @@ class PlayListController extends AbstractController
         $this->serializer = $serializer;
         $this->validator = $validator;
     }
-    
+
     /**
      * @Route("", name="", methods={"GET"})
      * @param PlayListRepository $playListRepository
@@ -36,12 +37,16 @@ class PlayListController extends AbstractController
      */
     public function index(PlayListRepository $playListRepository): Response
     {
-        $playList = $playListRepository->getLast();
-        return new PrettyJsonResponse([
-            'composition_id' => $playList->getComposition()->getId(),
-            'composition_name' => $playList->getComposition()->getName(),
-            'genre_name' => $playList->getComposition()->getGenre()->getName(),
-        ]);
+        $result = null;
+        $playList = $playListRepository->findLast();
+        if ($playList instanceof PlayList) {
+            $result = [
+                'composition_id' => $playList->getComposition()->getId(),
+                'composition_name' => $playList->getComposition()->getName(),
+                'genre_name' => $playList->getComposition()->getGenre()->getName(),
+            ];
+        }
+        return new PrettyJsonResponse($result);
     }
 
     /**
