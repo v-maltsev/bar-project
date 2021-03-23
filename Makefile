@@ -11,6 +11,9 @@ docker-down:
 docker-down-clear:
 	docker-compose down -v --remove-orphans
 
+docker-down-rmi:
+	docker-compose down -v --remove-orphans --rmi all
+
 docker-pull:
 	docker-compose pull
 
