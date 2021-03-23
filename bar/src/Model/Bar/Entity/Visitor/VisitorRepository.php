@@ -37,6 +37,16 @@ class VisitorRepository
         return $this->repo->findAll();
     }
 
+    /**
+     * @param int $status
+     * @return Visitor[]|null
+     */
+    public function findAllByStatus(int $status): ?array
+    {
+        return $this->repo->findBy(['status' => $status]);
+    }
+
+
     public function add(Visitor $visitor): void
     {
         $this->entityManager->persist($visitor);

@@ -33,4 +33,12 @@ class PlayListRepository
         }
         return $playList;
     }
+
+    /**
+     * @return PlayList|object|null
+     */
+    public function findLast(): ?PlayList
+    {
+        return $this->repo->findOneBy([],['id'=>'desc']);
+    }
 }
