@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Bar;
 
+use App\Controller\Api\PrettyJsonResponse;
 use App\Model\Bar\Entity\Composition\Composition;
 use App\Model\Bar\Entity\Composition\CompositionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -17,15 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CompositionController extends AbstractController
 {
-    private SerializerInterface $serializer;
-    private ValidatorInterface $validator;
-
-    public function __construct(SerializerInterface $serializer, ValidatorInterface $validator)
-    {
-        $this->serializer = $serializer;
-        $this->validator = $validator;
-    }
-
     /**
      * @Route ("", name="", methods={"GET"})
      * @param CompositionRepository $compositionRepository
@@ -34,7 +24,7 @@ class CompositionController extends AbstractController
     public function index(CompositionRepository $compositionRepository):Response
     {
         $compositionArray = $compositionRepository->getAll();
-        return $this->json([
+        return new PrettyJsonResponse([
             'items' => array_map(
                 static function (Composition $composition) {
                     return [

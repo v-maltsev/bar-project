@@ -22,12 +22,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("", name="home", methods={"GET"})
+     * @Route("/api", name="api", methods={"GET"})
      * @return Response
      */
     public function home(): Response
     {
-        return $this->json([
+        return new PrettyJsonResponse([
             'name' => 'JSON API',
         ]);
     }

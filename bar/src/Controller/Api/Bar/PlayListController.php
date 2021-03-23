@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Bar;
 
+use App\Controller\Api\PrettyJsonResponse;
 use App\Model\Bar\Entity\PlayList\PlayListRepository;
 use App\Model\Bar\UseCase\PlayList\Add;
-use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +37,7 @@ class PlayListController extends AbstractController
     public function index(PlayListRepository $playListRepository): Response
     {
         $playList = $playListRepository->getLast();
-        return $this->json([
+        return new PrettyJsonResponse([
             'composition_id' => $playList->getComposition()->getId(),
             'composition_name' => $playList->getComposition()->getName(),
             'genre_name' => $playList->getComposition()->getGenre()->getName(),
@@ -64,6 +64,6 @@ class PlayListController extends AbstractController
 
         $handler->handle($command);
 
-        return $this->json([]);
+        return new PrettyJsonResponse([]);
     }
 }
