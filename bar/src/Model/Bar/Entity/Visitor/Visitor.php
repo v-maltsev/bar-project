@@ -64,7 +64,7 @@ class Visitor
         $this->name = $name;
     }
 
-    public function getStatus(): string
+    public function getStatus(): int
     {
         return $this->status;
     }
